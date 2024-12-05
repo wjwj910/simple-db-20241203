@@ -3,6 +3,7 @@ package com.simpleDb;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class SimpleDb {
@@ -56,6 +57,8 @@ public class SimpleDb {
 
                 if (cls == String.class) {
                     return (T) resultSet.getString(1);
+                } else if (cls == LocalDateTime.class) {
+                    return (T) resultSet.getTimestamp(1).toLocalDateTime();
                 } else if (cls == Long.class) {
                     return (T) (Long) resultSet.getLong(1);
                 } else if (cls == Boolean.class) {
@@ -83,5 +86,9 @@ public class SimpleDb {
 
     public long selectLong(String sql) {
         return _run(sql, Long.class);
+    }
+
+    public LocalDateTime selectDatetime(String sql) {
+        return _run(sql, LocalDateTime.class);
     }
 }
