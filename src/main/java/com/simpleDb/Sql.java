@@ -13,6 +13,7 @@ public class Sql {
         return 3;
     }
 
-
-
+    public int delete() {
+        return 2;
+    }
 }
