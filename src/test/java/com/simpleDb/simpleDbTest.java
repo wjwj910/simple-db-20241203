@@ -175,4 +175,26 @@ public class simpleDbTest {
         });
     }
 
+    @Test
+    @DisplayName("selectRow")
+    public void t005() {
+        Sql sql = simpleDb.genSql();
+        /*
+        == rawSql ==
+        SELECT *
+        FROM article
+        WHERE id = 1
+        */
+        sql.append("SELECT * FROM article WHERE id = 1");
+        Map<String, Object> articleRow = sql.selectRow();
+
+        assertThat(articleRow.get("id")).isEqualTo(1L);
+        assertThat(articleRow.get("title")).isEqualTo("제목1");
+        assertThat(articleRow.get("body")).isEqualTo("내용1");
+        assertThat(articleRow.get("createdDate")).isInstanceOf(LocalDateTime.class);
+        assertThat(articleRow.get("createdDate")).isNotNull();
+        assertThat(articleRow.get("modifiedDate")).isInstanceOf(LocalDateTime.class);
+        assertThat(articleRow.get("modifiedDate")).isNotNull();
+        assertThat(articleRow.get("isBlind")).isEqualTo(false);
+    }
 }
