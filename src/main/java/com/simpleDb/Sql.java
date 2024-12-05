@@ -1,16 +1,24 @@
 package com.simpleDb;
 
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Sql {
 
-    private String sqlFormat;
+public class Sql {
+    private final SimpleDb simpleDb;
+    private final StringBuilder sqlFormat;
+
+    public Sql(SimpleDb simpleDb) {
+        this.simpleDb = simpleDb;
+        this.sqlFormat = new StringBuilder();
+    }
 
     public Sql append(String sqlBit, Object... params) {
-        this.sqlFormat = sqlBit;
+        this.sqlFormat.append(" " + sqlBit);
         return this;
     }
 
@@ -85,8 +93,8 @@ public class Sql {
         return "제목1";
     }
 
+    // 위임
     public boolean selectBoolean() {
-        if(sqlFormat.equals("SELECT 1 = 1")) return true;
-        return false;
+        return simpleDb.selectBooean(sqlFormat.toString());
     }
 }

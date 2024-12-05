@@ -59,7 +59,20 @@ public class SimpleDb {
     }
 
     public Sql genSql() {
-        return new Sql();
+        return new Sql(this);
     }
 
+    public boolean selectBooean(String sql) {
+        connect(); // 연결 초기화
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean(1);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to execute SQL: " + sql + ". Error: " + e.getMessage(), e);
+        }
+
+
+    }
 }
