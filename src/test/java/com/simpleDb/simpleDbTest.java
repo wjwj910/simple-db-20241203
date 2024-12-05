@@ -8,6 +8,5 @@ public class simpleDbTest {
     @BeforeAll
     public static void beforeAll() {
         simpleDb = new SimpleDb("localhost", "root", "1122", "simpleDb__test");
-
     }
 }
