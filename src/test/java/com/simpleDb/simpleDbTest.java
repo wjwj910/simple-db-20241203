@@ -1,9 +1,8 @@
 package com.simpleDb;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
+import java.util.stream.IntStream;
 
 public class simpleDbTest {
     private static SimpleDb simpleDb;
@@ -14,6 +13,11 @@ public class simpleDbTest {
 
         createArticleTable();
 
+    }
+    @BeforeEach
+    public void beforeEach() {
+        truncateArticleTable();
+        makeArticleTestData();
     }
 
     @AfterAll
@@ -37,9 +41,30 @@ public class simpleDbTest {
                 """);
     }
 
+    private void makeArticleTestData() {
+        IntStream.rangeClosed(1, 6).forEach(no -> {
+            boolean isBlind = no > 3;
+            String title = "제목%d".formatted(no);
+            String body = "내용%d".formatted(no);
+
+            simpleDb.run("""
+                    INSERT INTO article
+                    SET createdDate = NOW(),
+                    modifiedDate = NOW(),
+                    title = ?,
+                    `body` = ?,
+                    isBlind = ?
+                    """, title, body, isBlind);
+        });
+    }
+
+    private void truncateArticleTable() {
+        simpleDb.run("TRUNCATE article");
+    }
+
     @Test
     @DisplayName("데이터베이스 연결 테스트")
-    public void t000(){
+    public void t000() {
 
     }
 
