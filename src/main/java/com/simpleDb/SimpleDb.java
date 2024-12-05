@@ -2,6 +2,7 @@ package com.simpleDb;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 
 @RequiredArgsConstructor
@@ -26,25 +27,6 @@ public class SimpleDb {
         }
     }
 
-    // SQL 실행 메서드
-    public void run(String sql, Object... params) {
-        connect(); // 연결 초기화
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            bindParameters(preparedStatement, params); // 파라미터 바인딩 로직 분리
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to execute SQL: " + sql + ". Error: " + e.getMessage(), e);
-        }
-    }
-
-    // PreparedStatement 파라미터 바인딩 분리
-    private void bindParameters(PreparedStatement preparedStatement, Object... params) throws SQLException {
-        for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
-        }
-    }
-
     // 자원 해제
     public void close() {
         if (connection == null) {
@@ -58,21 +40,42 @@ public class SimpleDb {
         }
     }
 
+    // SQL 실행 메서드
+    public int run(String sql, Object... params) {
+        return (int) _run(sql, params);
+    }
+
+    public Object _run(String sql, Object... params) {
+        connect();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            bindParameters(preparedStatement, params); // 파라미터 바인딩 로직 분리
+
+            if (sql.startsWith("SELECT")) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
+
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to execute SQL: " + sql + ". Error: " + e.getMessage(), e);
+        }
+    }
+
+    // PreparedStatement 파라미터 바인딩 분리
+    private void bindParameters(PreparedStatement preparedStatement, Object... params) throws SQLException {
+        for (int i = 0; i < params.length; i++) {
+            preparedStatement.setObject(i + 1, params[i]);
+        }
+    }
+
     public Sql genSql() {
         return new Sql(this);
     }
 
     public boolean selectBooean(String sql) {
-        connect(); // 연결 초기화
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return resultSet.getBoolean(1);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to execute SQL: " + sql + ". Error: " + e.getMessage(), e);
-        }
-
+        return (boolean) _run(sql);
 
     }
 }
