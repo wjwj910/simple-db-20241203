@@ -56,6 +56,8 @@ public class SimpleDb {
 
                 if (cls == String.class) {
                     return (T) resultSet.getString(1);
+                } else if (cls == Long.class) {
+                    return (T) (Long) resultSet.getLong(1);
                 } else if (cls == Boolean.class) {
                     return (T) (Boolean) resultSet.getBoolean(1);
                 }
@@ -77,5 +79,9 @@ public class SimpleDb {
 
     public String selectString(String sql) {
         return _run(sql, String.class);
+    }
+
+    public long selectLong(String sql) {
+        return _run(sql, Long.class);
     }
 }
