@@ -72,7 +72,7 @@ public class Sql {
         return LocalDateTime.now();
     }
 
-    public Long selectLong() {
+    public long selectLong() {
         return 1L;
     }
 }
