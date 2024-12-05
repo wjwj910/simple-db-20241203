@@ -216,4 +216,23 @@ public class simpleDbTest {
         assertThat(diff).isLessThanOrEqualTo(1L);
     }
 
+    @Test
+    @DisplayName("selectLong")
+    public void t007() {
+        Sql sql = simpleDb.genSql();
+        /*
+        == rawSql ==
+        SELECT id
+        FROM article
+        WHERE id = 1
+        */
+        sql.append("SELECT id")
+                .append("FROM article")
+                .append("WHERE id = 1");
+
+        Long id = sql.selectLong();
+
+        assertThat(id).isEqualTo(1);
+    }
+
 }
