@@ -5,10 +5,7 @@ public class Sql {
         return this;
     }
 
-    public Sql append(String sqlBit, String param) {
-        return this;
-    }
-    public Sql append(String sqlBit, int param1, int param2, int param3, int param4) {
+    public Sql append(String sqlBit, Object... params) {
         return this;
     }
 
