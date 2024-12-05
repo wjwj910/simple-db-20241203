@@ -57,4 +57,8 @@ public class SimpleDb {
             throw new RuntimeException("Failed to close database connection: " + e.getMessage(), e);
         }
     }
+
+    public Sql genSql() {
+        return new Sql();
+    }
 }
