@@ -1,6 +1,9 @@
 package com.simpleDb;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class simpleDbTest {
     private static SimpleDb simpleDb;
@@ -12,6 +15,12 @@ public class simpleDbTest {
         createArticleTable();
 
     }
+
+    @AfterAll
+    public static void afterAll() {
+        simpleDb.close();
+    }
+
     private static void createArticleTable() {
         simpleDb.run("DROP TABLE IF EXISTS article");
 
@@ -27,4 +36,11 @@ public class simpleDbTest {
                 )
                 """);
     }
+
+    @Test
+    @DisplayName("데이터베이스 연결 테스트")
+    public void t000(){
+
+    }
+
 }
