@@ -95,6 +95,6 @@ public class Sql {
 
     // 위임
     public boolean selectBoolean() {
-        return simpleDb.selectBooean(sqlFormat.toString().trim());
+        return simpleDb.selectBoolean(sqlFormat.toString().trim());
     }
 }
