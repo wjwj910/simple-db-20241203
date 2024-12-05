@@ -71,4 +71,8 @@ public class Sql {
     public LocalDateTime selectDatetime() {
         return LocalDateTime.now();
     }
+
+    public Long selectLong() {
+        return 1L;
+    }
 }
