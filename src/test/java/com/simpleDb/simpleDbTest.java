@@ -12,7 +12,6 @@ public class simpleDbTest {
         createArticleTable();
 
     }
-
     private static void createArticleTable() {
         simpleDb.run("DROP TABLE IF EXISTS article");
 
