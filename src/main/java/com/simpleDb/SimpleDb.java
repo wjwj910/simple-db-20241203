@@ -166,4 +166,8 @@ public class SimpleDb {
     public int delete(String sql, Object... params) {
         return _run(sql, Integer.class, params);
     }
+
+    public int update(String sql, Object[] params) {
+        return _run(sql, Integer.class, params);
+    }
 }
